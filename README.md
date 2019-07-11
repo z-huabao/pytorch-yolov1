@@ -16,7 +16,7 @@ Effciency has not been optimized. It may be faster... I don't know
 ## Train on voc2012+2007
 | model                | backbone | map@voc2007test  | FPS  |
 | -------------------- | -------------- | ---------- | -------   |
-| our ResNet_YOLO  |   ResNet50        | 66.5%      |  57   |
+| [ResNet-YOLO](https://pan.baidu.com/s/1ci_WfRCBvxxl857SEBU0gw)(提取码a7x2) |   ResNet50        | 66.5%      |  57   |
 | YOLO  |   darknet19?        | 63.4%      |  45   |
 | YOLO VGG-16  |   VGG-16        | 66.4%      |  21   |
 
