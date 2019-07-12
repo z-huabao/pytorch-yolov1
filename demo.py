@@ -12,7 +12,7 @@ from torch.autograd import Variable
 from nets import Backbone, YoloV1
 from data.classes import VOC_CLASSES, COLOR
 
-USE_GPU = torch.cuda.is_available() and 1
+USE_GPU = torch.cuda.is_available() and 0
 
 
 def decoder(pred):
@@ -24,7 +24,7 @@ def decoder(pred):
     cell_size = 1. / grid_num
     pred = pred.data.squeeze(0) #7x7x30
 
-    contain = pred[:,:,[4,9]]
+    contain = pred[:,:,[4,9]]  # two box every grid cell
     mask1 = contain > 0.1 #大于阈值
     mask2 = (contain==contain.max()) #we always select the best contain_prob what ever it>0.9
     mask = (mask1+mask2).gt(0)
@@ -33,7 +33,7 @@ def decoder(pred):
     boxes, cls_indexs, probs = [], [], []
     for i in range(grid_num):
         for j in range(grid_num):
-            for b in range(2):
+            for b in range(2):  # two box every grid cell
                 if mask[i,j,b] == 1:
                     #print(i,j,b)
                     box = pred[i, j, b*5:b*5+4]
@@ -158,11 +158,14 @@ if __name__ == '__main__':
     net = YoloV1(backbone)
 
     print('loading model...')
-    # net.load_state_dict(torch.load('./output/%s-best.pth' % net.name))
-    net.load_state_dict(torch.load('./output/best.pth'))
+    # net.load_state_dict(torch.load('./output/%s-best.pth' % net.name, map_location='cpu'))
+    net.load_state_dict(torch.load('./output/best.pth', map_location='cpu'))
     net.eval()
-    # g = torchviz.make_dot(net(torch.rand(1,3,448,448)), params=dict(net.named_parameters()))
-    # g.view()
+
+    import torchsummary, torchviz
+    torchsummary.summary(net, (3,448,448), device='cpu')
+    torchviz.make_dot(net, torch.zeros([1,3,448,448])).view()
+
     if USE_GPU:
         net.cuda()
 

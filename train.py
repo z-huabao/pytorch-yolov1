@@ -1,3 +1,4 @@
+#python3
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 import torch
@@ -7,6 +8,7 @@ import numpy as np
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 from torchvision import models
+from torchsummary import summary
 from torch.autograd import Variable
 from tqdm import tqdm
 
@@ -28,19 +30,19 @@ batch_size = 22
 backbone = Backbone('resnet50', 'layer4', pretrained=True)
 net = YoloV1(backbone)
 net.train()
-print(net)
 criterion = yoloLoss(7,2,5,0.5)
 
 # net.load_state_dict(torch.load('output/%s-best.pth' % net.name))
 # print('load pre-trined model')
 print('cuda', torch.cuda.current_device(), torch.cuda.device_count())
+summary(net, (2, 448, 448), device='cpu')
 
 if USE_GPU:
     net.cuda()
 
 # view network
-# g = torchviz.make_dot(model(torch.rand(1,3,448,448).cuda()), params=dict(model.named_parameters()))
-# g.view()
+# torchviz.make_dot(net, torch.rand(1,3,448,448).cuda()).view()
+# quit(0)
 
 # initial optimizer
 params=[]
