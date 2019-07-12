@@ -149,12 +149,12 @@ def draw_image(image, result):
         quit(0)
 
 if __name__ == '__main__':
-    cam = cv2.VideoCapture(-1)
+    cam = cv2.VideoCapture(0)
     image = cam.read()[1]
     assert image is not None, str(cam)
     print('camera resolution:', image.shape)
 
-    backbone = Backbone('resnet50', 'layer4', pretrained=True)
+    backbone = Backbone('resnet50', 'layer4', pretrained=False)
     net = YoloV1(backbone)
 
     print('loading model...')
