@@ -21,7 +21,7 @@ from data.dataset import yoloDataset
 USE_GPU = torch.cuda.is_available()
 
 file_root = './data/images/'
-learning_rate = 0.001
+learning_rate = 0.1
 num_epochs = 50
 batch_size = 22
 
@@ -35,7 +35,7 @@ criterion = yoloLoss(7,2,5,0.5)
 # net.load_state_dict(torch.load('output/%s-best.pth' % net.name))
 # print('load pre-trined model')
 print('cuda', torch.cuda.current_device(), torch.cuda.device_count())
-summary(net, (2, 448, 448), device='cpu')
+summary(net, (3, 448, 448), device='cpu')
 
 if USE_GPU:
     net.cuda()
@@ -80,9 +80,9 @@ for epoch in range(num_epochs):
     net.train()
     # learning rate schedule
     if epoch == 30:
-        learning_rate=0.0001
+        learning_rate=0.01
     if epoch == 40:
-        learning_rate=0.00001
+        learning_rate=0.001
     for param_group in optimizer.param_groups:
         param_group['lr'] = learning_rate
 
@@ -90,7 +90,7 @@ for epoch in range(num_epochs):
     print('Learning Rate for this epoch: {}'.format(learning_rate))
 
     total_loss = 0.
-    # train by iter every epoch
+    # train by iter on every epoch
     for i, (images, target) in enumerate(train_loader):
         images = Variable(images)
         target = Variable(target)
