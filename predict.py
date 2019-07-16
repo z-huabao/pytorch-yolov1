@@ -131,7 +131,7 @@ def draw_image(image, result, is_show=True):
         p1 = (x1, y1- text_size[1])
 
         # draw box
-        cv2.rectangle(image, x1, y1, (x2, y2), color, 2)
+        cv2.rectangle(image, (x1, y1), (x2, y2), color, 2)
 
         # draw label
         cv2.rectangle(image, (p1[0] - 2//2, p1[1] - 2 - baseline), (p1[0] + text_size[0], p1[1] + text_size[1]), color, -1)
