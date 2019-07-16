@@ -3,7 +3,7 @@
 import torchsummary, torchviz
 from predict import *
 
-cam = cv2.VideoCapture(-1)
+cam = cv2.VideoCapture(0)
 image = cam.read()[1]
 assert image is not None, str(cam)
 print('camera resolution:', image.shape)
