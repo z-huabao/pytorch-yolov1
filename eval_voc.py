@@ -142,9 +142,10 @@ def load_labels(*args, dtype='yolo'):
         anns = []
         for ann in data['annotations']:
             f = id2file[ann['image_id']]
-            b = np.int32(ann['bbox']).tolist()
-            c = ann['category_id']
-            anns.append([f] + b + [c])
+            b = np.int32(ann['bbox'])
+            b[2:] += b[:2]
+            c = ann['category_id'] - 1
+            anns.append([f] + b.tolist() + [c])
 
         classes = {c['id']-1: c['name'] for c in data['catogories']}
         return list(id2file.value()), anns, [classes[i] for i in range(len(classes))]
